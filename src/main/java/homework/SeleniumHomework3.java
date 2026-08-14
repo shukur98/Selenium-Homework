@@ -4,13 +4,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Clock;
+import java.time.Duration;
 
 public class SeleniumHomework3 {
 
     public static void main(String[] args) {
 
         WebDriver driver = new ChromeDriver();
-
+        Clock timeout;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         driver.manage().window().maximize();
         driver.get("https://anarabbas.com/labs/auto-lab");
 
@@ -58,47 +64,84 @@ public class SeleniumHomework3 {
         );
 
 
-        // =========================
-        // BUTTONS
-        // =========================
 
-        // Sol menyudakı Buttons düyməsini tap
+// BUTTONS
+// =========================
+
+// Soldakı Buttons kateqoriyasını tap
         WebElement buttonsMenu =
                 driver.findElement(
-                        By.xpath(
-                                "//nav[@id='pg-nav']//button[contains(.,'Buttons')]"
+                        By.cssSelector(
+                                "#pg-nav button[data-p='btn']"
                         )
                 );
 
-        // Buttons bölməsini aç
+// Buttons bölməsini aç
         buttonsMenu.click();
 
 
-        // Primary Click düyməsini tap
-        WebElement primaryButton =
-                driver.findElement(
-                        By.id("clickBtn")
-                );
+// Nəticə mesajının göstərildiyi element
+        WebElement buttonNote =
+                driver.findElement(By.id("btnNote"));
 
-        // Klik et
+
+// -------------------------
+// 1. PRIMARY CLICK
+// -------------------------
+
+        WebElement primaryButton =
+                driver.findElement(By.id("clickBtn"));
+
         primaryButton.click();
 
-
-        // Nəticə mətnini tap
-        WebElement buttonNote =
-                driver.findElement(
-                        By.id("btnNote")
-                );
-
-
-        // Nəticəni console-a çıxart
         System.out.println(
                 "Primary Click nəticəsi: "
                         + buttonNote.getText()
         );
 
 
-        // Disabled düyməni tap
+// Actions obyekti
+        Actions actions = new Actions(driver);
+
+
+
+// 2. DOUBLE CLICK
+// -------------------------
+
+        WebElement doubleButton =
+                driver.findElement(By.id("dblBtn"));
+
+        actions
+                .doubleClick(doubleButton)
+                .perform();
+
+        System.out.println(
+                "Double Click nəticəsi: "
+                        + buttonNote.getText()
+        );
+
+
+// -------------------------
+// 3. RIGHT CLICK
+// -------------------------
+
+        WebElement rightButton =
+                driver.findElement(By.id("rcBtn"));
+
+        actions
+                .contextClick(rightButton)
+                .perform();
+
+        System.out.println(
+                "Right Click nəticəsi: "
+                        + buttonNote.getText()
+        );
+
+
+// -------------------------
+// 4. DISABLED
+// -------------------------
+
         WebElement disabledButton =
                 driver.findElement(
                         By.cssSelector(
@@ -106,13 +149,10 @@ public class SeleniumHomework3 {
                         )
                 );
 
-
-        // Aktiv olub-olmadığını yoxla
         System.out.println(
                 "Disabled button aktivdir: "
                         + disabledButton.isEnabled()
         );
-
 
         driver.quit();
     }
